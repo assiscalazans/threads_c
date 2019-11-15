@@ -39,59 +39,59 @@ void *transferencia(void *arg)
    return 0;
 }
 
-int main()
+int main() 
 {
- void* stack;
- void* param;
- int i;
+	void* stack;
+	void* param;
+	int i;
 
- // Allocate the stack
- stack = malloc( FIBER_STACK );
- if ( stack == 0 )
- {
- perror("malloc: could not allocate stack");
- exit(1);
- }
- // Todas as contas começam com saldo 100
- from.saldo = 100;
- to.saldo = 100;
- printf( "Transferindo 10 para a conta c2\n" );
- valor = 10;
- pthread_t thid;
- void * thread_res;
- int rstatus;
+	// Allocate the stack
+	stack = malloc( FIBER_STACK );
+	if ( stack == 0 )
+	{
+	perror("malloc: could not allocate stack");
+	exit(1);
+	}
 
- for (i = 0; i < 10; i++) {
-   // Call the clone system call to create the child thread
-   //pid = clone( &transferencia, (char*) stack + FIBER_STACK,
-   //SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0 );
+	// Todas as contas começam com saldo 100
+	from.saldo = 100;
+	to.saldo = 100;
+	printf( "Transferindo 10 para a conta c2\n" );
+	valor = 10;
+	pthread_t thid;
+	void * thread_res;
+	int rstatus;
 
-     pid = pthread_create (&thid, NULL, transferencia,"tread 1" );
-     if ( pid != 0 ) {
-       perror( "thread create error" );
-       exit(2);
-     }
+	for (i = 0; i < 10; i++) {
+		// Call the clone system call to create the child thread
+		//pid = clone( &transferencia, (char*) stack + FIBER_STACK,
+		//SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0 );
 
-    printf ("valor de pid %lu \n", thid);;
+		 pid = pthread_create (&thid, NULL, transferencia,"tread 1" );
+		 if ( pid != 0 ) {
+		   perror( "thread create error" );
+		   exit(2);
+		 }
 
-    rstatus = pthread_join(thid, &thread_res);
+		printf ("valor de pid %lu \n", thid);;
 
-    /*verificar se ocorreu algum erro na chamada de pthread_join*/
-  	if(rstatus != 0)
-  	{
-  		printf ("Erro ao aguardar finalização do thread.\n");
-  		exit(EXIT_FAILURE);
-  	}
+		rstatus = pthread_join(thid, &thread_res);
 
-  	/*exibe o valor de retorno da função 'routine'*/
-  	printf ("Thread finalizado! Retorno = %s\n", (char *)thread_res);
+		/*verificar se ocorreu algum erro na chamada de pthread_join*/
+		if(rstatus != 0)
+		{
+			printf ("Erro ao aguardar finalização do thread.\n");
+			exit(EXIT_FAILURE);
+		}
 
- }
+		/*exibe o valor de retorno da função 'routine'*/
+		printf ("Thread finalizado! Retorno = %s\n", (char *)thread_res);
 
- // Free the stack
- free( stack );
- printf("Transferências concluídas e memória liberada.\n");
- return 0;
+	}
 
+	// Free the stack
+	free( stack );
+	printf("Transferências concluídas e memória liberada.\n");
+	return 0;
 
 }
