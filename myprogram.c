@@ -49,8 +49,8 @@ int main()
 	stack = malloc( FIBER_STACK );
 	if ( stack == 0 )
 	{
-	perror("malloc: could not allocate stack");
-	exit(1);
+		perror("malloc: could not allocate stack");
+		exit(1);
 	}
 
 	// Todas as contas começam com saldo 100
